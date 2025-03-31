@@ -6,7 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.cooking.service.utils.SecurityUtils.getAuthenticatedUserId;
+import static com.cooking.service.common.security.utils.SecurityUtils.getAuthenticatedUserId;
 
 @Service
 @RequiredArgsConstructor

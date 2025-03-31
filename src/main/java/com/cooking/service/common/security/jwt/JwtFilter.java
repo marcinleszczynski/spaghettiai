@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,31 +27,29 @@ public class JwtFilter extends OncePerRequestFilter {
         this.jwtService = jwtService;
     }
 
+    @SneakyThrows
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        extractToken(request).ifPresent(token -> {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) {
+
+        var token = extractToken(request);
+
+        if (token != null) {
             var claims = jwtService.extractClaims(token);
             if (claims != null) {
                 var authentication = jwtService.getAuthentication(claims);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                try {
-                    filterChain.doFilter(request, response);
-                } catch (ServletException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                filterChain.doFilter(request, response);
+                return;
             }
-        });
+        }
         filterChain.doFilter(request, response);
     }
 
-    private Optional<String> extractToken(HttpServletRequest request) {
+    private String extractToken(HttpServletRequest request) {
         var authorization = request.getHeader("Authorization");
         if (authorization != null && authorization.startsWith(BEARER)) {
-            return Optional.of(authorization.substring(7));
+            return authorization.substring(7);
         }
-        return Optional.empty();
+        return null;
     }
 }
