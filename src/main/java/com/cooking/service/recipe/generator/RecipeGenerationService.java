@@ -1,11 +1,12 @@
 package com.cooking.service.recipe.generator;
 
-import com.cooking.controller.recipe.dto.RecipeRequestDto;
-import com.cooking.controller.recipe.dto.RecipeResponseDto;
+import com.cooking.controller.recipe.dto.RecipeGenerationRequestDto;
+import com.cooking.controller.recipe.dto.RecipeGenerationResponseDto;
 import com.cooking.dao.model.recipe.Recipe;
 import com.cooking.dao.repository.recipe.RecipeRepository;
 import com.cooking.service.integration.openai.OpenAiService;
 import com.cooking.service.recipe.factory.RecipeFactory;
+import com.cooking.service.recipe.generator.dto.RecipeAiResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -25,7 +26,7 @@ public class RecipeGenerationService {
     private final RecipeRepository recipeRepository;
     private final RecipeFactory recipeFactory;
 
-    public RecipeResponseDto generateRecipe(RecipeRequestDto dto) {
+    public RecipeGenerationResponseDto generateRecipe(RecipeGenerationRequestDto dto) {
 
         var recipeGenerationRequest = prepareRecipeGenerationRequest(dto);
         var generatedRecipe = executeRecipeGenerationRequest(recipeGenerationRequest);
@@ -35,7 +36,7 @@ public class RecipeGenerationService {
     }
 
     @SneakyThrows
-    private String prepareRecipeGenerationRequest(RecipeRequestDto dto) {
+    private String prepareRecipeGenerationRequest(RecipeGenerationRequestDto dto) {
         var promptTemplate = new PromptTemplate(new ClassPathResource("prompts/create_recipe_prompt.st"));
         promptTemplate.add("request", objectMapper.writeValueAsString(dto.getIngredients()));
 
@@ -46,10 +47,8 @@ public class RecipeGenerationService {
     private Recipe executeRecipeGenerationRequest(String request) {
         var response = unwrapFromWindowMarkdown(openAiService.process(request));
 
-        var json = objectMapper.readTree(response);
-        var name = json.get("name").asText();
-        var text = json.get("text").asText();
+        var aiResponse = objectMapper.readValue(response, RecipeAiResponseDto.class);
 
-        return recipeFactory.create(name, text);
+        return recipeFactory.from(aiResponse);
     }
 }

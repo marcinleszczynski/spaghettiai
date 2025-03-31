@@ -1,7 +1,7 @@
 package com.cooking.controller.recipe;
 
-import com.cooking.controller.recipe.dto.RecipeRequestDto;
-import com.cooking.controller.recipe.dto.RecipeResponseDto;
+import com.cooking.controller.recipe.dto.RecipeGenerationRequestDto;
+import com.cooking.controller.recipe.dto.RecipeGenerationResponseDto;
 import com.cooking.service.recipe.generator.RecipeGenerationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class RecipeController {
     private final RecipeGenerationService recipeGeneratorService;
 
     @PostMapping("/generate")
-    public ResponseEntity<RecipeResponseDto> generateRecipe(@RequestBody RecipeRequestDto dto) {
+    public ResponseEntity<RecipeGenerationResponseDto> generateRecipe(@RequestBody RecipeGenerationRequestDto dto) {
         log.info("Received a request to generate recipe for user: {}", getAuthenticatedUserEmail());
         return ResponseEntity.ok(recipeGeneratorService.generateRecipe(dto));
     }

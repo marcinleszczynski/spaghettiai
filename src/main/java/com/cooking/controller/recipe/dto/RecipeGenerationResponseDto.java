@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class RecipeResponseDto {
+public class RecipeGenerationResponseDto {
     private String name;
     private String content;
+    private String explanation;
 }

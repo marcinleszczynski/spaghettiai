@@ -7,7 +7,8 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
-        permissions: content-read
+        permissions:
+            contents: read
         steps:
             - uses: actions/checkout@v4
             - name: Set up JDK 21
@@ -15,7 +16,9 @@ jobs:
               with:
                   java-version: 21
                   distribution: temurin
+
             - name: Setup Gradle
               uses: gradle/actions/setup-gradle@ec92e829475ac0c2315ea8f9eced72db85bb337a
+
             - name: Build
               run: ./gradlew build --info

@@ -11,12 +11,12 @@ Please give your answer in following json format:
 
 \{
     name: String,
-    text: String,
+    content: String,
     explanation: String
 \}
 
 name - it's the name of the recipe, try to come up with something simple, that obviously tells, what the dish is about
-text - actual text of recipe, mentioning ingredients, and all the steps needed for preparation. Try to be as specific as you can.
+content - actual content of recipe, mentioning ingredients, and all the steps needed for preparation. Try to be as specific as you can.
 Remember about proper formating, ingredients should be separated by a newline, and steps should be visibly separated from each other.
 explanation - explain, why you think this is the best recipe.
 
