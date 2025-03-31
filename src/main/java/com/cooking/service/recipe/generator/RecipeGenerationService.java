@@ -1,7 +1,7 @@
 package com.cooking.service.recipe.generator;
 
+import com.cooking.controller.recipe.dto.RecipeDto;
 import com.cooking.controller.recipe.dto.RecipeGenerationRequestDto;
-import com.cooking.controller.recipe.dto.RecipeGenerationResponseDto;
 import com.cooking.dao.model.recipe.Recipe;
 import com.cooking.dao.repository.recipe.RecipeRepository;
 import com.cooking.service.integration.openai.OpenAiService;
@@ -26,7 +26,7 @@ public class RecipeGenerationService {
     private final RecipeRepository recipeRepository;
     private final RecipeFactory recipeFactory;
 
-    public RecipeGenerationResponseDto generateRecipe(RecipeGenerationRequestDto dto) {
+    public RecipeDto generateRecipe(RecipeGenerationRequestDto dto) {
 
         var recipeGenerationRequest = prepareRecipeGenerationRequest(dto);
         var generatedRecipe = executeRecipeGenerationRequest(recipeGenerationRequest);

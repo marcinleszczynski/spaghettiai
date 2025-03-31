@@ -1,4 +1,4 @@
-package com.cooking.service.utils;
+package com.cooking.service.common.security.utils;
 
 import com.cooking.service.common.security.user.SecurityUser;
 import org.springframework.security.core.context.SecurityContextHolder;
