@@ -1,0 +1,32 @@
+spring:
+    application:
+        name: cooking
+    datasource:
+        hikari:
+            schema: cooking
+            maximum-pool-size: 50
+            minimum-idle: 10
+            connection-timeout: 30000
+            connection-test-query: SELECT 1
+    flyway:
+        baseline-on-migrate: true
+        default-schema: cooking
+        table: flyway_cooking
+        enabled: true
+        locations: classpath:db/migration
+    ai:
+        openai:
+            api-key: AIzaSyALOu5jNg_ftUxXfNh-GBgikL72RkHja_I
+            chat:
+                base-url: https://generativelanguage.googleapis.com
+                completions-path: /v1beta/openai/chat/completions
+                options:
+                    model: gemini-2.0-flash
+                    temperature: 0.5
+
+server:
+    servlet:
+        context-path: /api/cooking
+jwt:
+    secret: my-secret-key-that-should-be-long-enough-now-ok-but-still-too-small-for-some-reason
+    validity-in-seconds: 90000
