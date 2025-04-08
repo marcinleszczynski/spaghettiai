@@ -5,6 +5,7 @@ import com.cooking.dao.repository.recipe.RecipeRepository;
 import com.cooking.service.recipe.mapper.RecipeMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,5 +33,10 @@ public class RecipeService {
                 .stream()
                 .map(RecipeMapper::map)
                 .toList();
+    }
+
+    public List<RecipeDto> findRecentRecipes(UUID userId, int limit) {
+        var pageRequest = PageRequest.of(0, limit);
+        return map(recipeRepository.findByUser_IdOrderByModificationTimestampDesc(userId, pageRequest));
     }
 }

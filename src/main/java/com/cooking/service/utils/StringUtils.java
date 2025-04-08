@@ -7,9 +7,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class StringUtils {
 
-    public static String unwrapFromWindowMarkdown(String text) {
+    public static String unwrapJSONFromWindowMarkdown(String text) {
         var beginIndex = text.indexOf('{');
         var endIndex = text.lastIndexOf('}');
+        return text.substring(beginIndex, endIndex+1);
+    }
+
+    public static String unwrapListFromWindowMarkdown(String text) {
+        var beginIndex = text.indexOf('[');
+        var endIndex = text.lastIndexOf(']');
         return text.substring(beginIndex, endIndex+1);
     }
 }

@@ -4,6 +4,8 @@ import com.cooking.controller.recipe.dto.RecipeDto;
 import com.cooking.dao.model.recipe.Recipe;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RecipeMapper {
 
@@ -15,5 +17,12 @@ public class RecipeMapper {
                 .explanation(recipe.getExplanation())
                 .creationTimestamp(recipe.getCreationTimestamp())
                 .build();
+    }
+
+    public static List<RecipeDto> map(List<Recipe> recipes) {
+        return recipes
+                .stream()
+                .map(RecipeMapper::map)
+                .toList();
     }
 }
