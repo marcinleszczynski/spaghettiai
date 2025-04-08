@@ -29,4 +29,5 @@ server:
         context-path: /api/cooking
 jwt:
     secret: my-secret-key-that-should-be-long-enough-now-ok-but-still-too-small-for-some-reason
-    validity-in-seconds: 90000
+    validity-in-seconds: 900000
+#    validity-in-seconds: 90000

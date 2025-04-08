@@ -3,3 +3,6 @@ spring:
         url: jdbc:postgresql://localhost:5432/cooking_db
         username: postgres
         password: postgres
+
+app:
+    frontend-url: http://localhost:5173

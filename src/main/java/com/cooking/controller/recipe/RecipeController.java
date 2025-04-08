@@ -1,5 +1,6 @@
 package com.cooking.controller.recipe;
 
+import com.cooking.controller.recipe.dto.RecipeDescriptionDto;
 import com.cooking.controller.recipe.dto.RecipeDto;
 import com.cooking.controller.recipe.dto.RecipeGenerationRequestDto;
 import com.cooking.service.recipe.RecipeService;
@@ -25,7 +26,7 @@ public class RecipeController {
     private final RecipeService recipeService;
 
     @PostMapping("/generate")
-    public ResponseEntity<RecipeDto> generateRecipe(@RequestBody RecipeGenerationRequestDto dto) {
+    public ResponseEntity<RecipeDto> generateRecipe(@RequestBody RecipeDescriptionDto dto) {
         log.info("Received a request to generate recipe for user: {}", getAuthenticatedUserEmail());
         return ResponseEntity.ok(recipeGeneratorService.generateRecipe(dto));
     }
@@ -34,6 +35,12 @@ public class RecipeController {
     public ResponseEntity<RecipeDto> getRecipe(@PathVariable UUID id) {
         log.info("Received a request to get recipe with id: {}", id);
         return ResponseEntity.ok(recipeService.findRecipeById(id));
+    }
+
+    @GetMapping("/recent")
+    public ResponseEntity<List<RecipeDto>> getRecentRecipes(@RequestParam("limit") int limit) {
+        log.info("Received a request to get recent recipes for user: {}", getAuthenticatedUserEmail());
+        return ResponseEntity.ok(recipeService.findRecentRecipes(getAuthenticatedUserId(), limit));
     }
 
     @GetMapping
