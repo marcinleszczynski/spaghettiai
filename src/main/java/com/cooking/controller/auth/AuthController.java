@@ -8,10 +8,9 @@ import com.cooking.service.user.UserCreateOrchestrator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -33,5 +32,12 @@ public class AuthController {
     public ResponseEntity<UserLoginResponseDto> login(@RequestBody UserLoginRequestDto dto) {
         log.info("Received a request to login a user: {}", dto.getEmail());
         return ResponseEntity.ok(authService.login(dto));
+    }
+
+    @PutMapping("/activate")
+    public ResponseEntity<Void> activate(@RequestParam("code") UUID code) {
+        log.info("Received a request to activate a user with activation code: {}", code);
+        authService.activate(code);
+        return ResponseEntity.ok().build();
     }
 }

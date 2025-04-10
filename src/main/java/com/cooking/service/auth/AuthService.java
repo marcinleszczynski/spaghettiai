@@ -4,11 +4,14 @@ import com.cooking.controller.auth.dto.UserLoginRequestDto;
 import com.cooking.controller.auth.dto.UserLoginResponseDto;
 import com.cooking.dao.repository.user.UserRepository;
 import com.cooking.service.common.security.jwt.JwtService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -24,7 +27,7 @@ public class AuthService {
         var password = dto.getPassword();
 
         var user = userRepository
-                .findByEmail(email)
+                .findByEmailAndActivatedTrue(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User with email " + email + " not found"));
 
         if (comparePasswordHashes(password, user.getPassword())) {
@@ -33,6 +36,15 @@ public class AuthService {
                     .build();
         }
         throw new UsernameNotFoundException("Wrong password");
+    }
+
+    public void activate(UUID activationCode) {
+        var user = userRepository
+                .findByActivationCode(activationCode)
+                .orElseThrow(() -> new EntityNotFoundException("User with activation code " + activationCode + " not found"));
+        user.setActivated(true);
+        user.setActivationCode(null);
+        userRepository.save(user);
     }
 
     private boolean comparePasswordHashes(String password, String hash) {

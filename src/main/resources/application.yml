@@ -16,7 +16,7 @@ spring:
         locations: classpath:db/migration
     ai:
         openai:
-            api-key: AIzaSyALOu5jNg_ftUxXfNh-GBgikL72RkHja_I
+            api-key: ${GEMINI_API_KEY}
             chat:
                 base-url: https://generativelanguage.googleapis.com
                 completions-path: /v1beta/openai/chat/completions
@@ -29,5 +29,9 @@ server:
         context-path: /api/cooking
 jwt:
     secret: my-secret-key-that-should-be-long-enough-now-ok-but-still-too-small-for-some-reason
-    validity-in-seconds: 900000
-#    validity-in-seconds: 90000
+    validity-in-seconds: 90000
+
+mail:
+    sender:
+        email: venkman2003@gmail.com
+        password: ${EMAIL_PASSWORD}
