@@ -34,4 +34,4 @@ jwt:
 mail:
     sender:
         email: venkman2003@gmail.com
-        password: tanu jsef fvsf ikhn
+        password: ${EMAIL_PASSWORD}
