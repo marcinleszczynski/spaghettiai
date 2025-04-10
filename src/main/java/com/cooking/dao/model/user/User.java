@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.cooking.service.common.security.SecurityConstants.ROLE_ADMIN;
 import static com.cooking.service.common.security.SecurityConstants.ROLE_USER;
@@ -29,7 +30,11 @@ public class User extends AbstractEntity {
     private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    public List<Recipe> recipes;
+    private List<Recipe> recipes;
+
+    private Boolean activated;
+
+    private UUID activationCode;
 
     @Getter
     @RequiredArgsConstructor

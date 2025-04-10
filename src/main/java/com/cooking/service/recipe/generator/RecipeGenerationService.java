@@ -47,7 +47,7 @@ public class RecipeGenerationService {
 
     private String prepareIngredientAnalysisRequest(RecipeDescriptionDto dto) {
 
-        var promptTemplate = new PromptTemplate(new ClassPathResource("prompts/analyse_ingredients.st"));
+        var promptTemplate = new PromptTemplate(new ClassPathResource("templates/prompts/analyse_ingredients.st"));
         promptTemplate.add("description", dto.getDescription());
 
         return promptTemplate.render();
@@ -66,7 +66,7 @@ public class RecipeGenerationService {
 
     @SneakyThrows
     private String prepareRecipeGenerationRequest(RecipeGenerationRequestDto dto) {
-        var promptTemplate = new PromptTemplate(new ClassPathResource("prompts/create_recipe_prompt.st"));
+        var promptTemplate = new PromptTemplate(new ClassPathResource("templates/prompts/create_recipe_prompt.st"));
         promptTemplate.add("request", objectMapper.writeValueAsString(dto.getIngredients()));
 
         return promptTemplate.render();
