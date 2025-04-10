@@ -7,6 +7,8 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
+        env:
+            EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         permissions:
             contents: read
         steps:
