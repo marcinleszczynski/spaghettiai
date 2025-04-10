@@ -24,8 +24,8 @@ public class EmailService {
     private final Transport transport;
 
     @SneakyThrows
-    public void sendEmail(String recipient, String text) {
-        var message = createMessage(session, recipient, text);
+    public void sendEmail(String recipient, String subject, String text) {
+        var message = createMessage(session, recipient, subject, text);
 
         transport.connect("smtp.gmail.com", senderEmail, senderPassword);
         transport.sendMessage(message, message.getAllRecipients());
@@ -33,11 +33,11 @@ public class EmailService {
     }
 
     @SneakyThrows
-    private MimeMessage createMessage(Session session, String to, String text) {
+    private MimeMessage createMessage(Session session, String to, String subject, String text) {
         var result = new MimeMessage(session);
 
         result.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-        result.setSubject("SpaghettiAI activation account");
+        result.setSubject(subject);
 
         var multipart = new MimeMultipart();
         var bodyPart = new MimeBodyPart();

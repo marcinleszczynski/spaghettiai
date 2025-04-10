@@ -28,12 +28,13 @@ public class EmailServiceTest {
     @Test
     public void test() throws MessagingException {
 
-        var message = "hello";
+        var subject = "subject";
+        var message = "message";
         var recipient = "venkman2003@gmail.com";
 
         doNothing().when(transport).sendMessage(any(), any());
 
-        emailService.sendEmail(message, recipient);
+        emailService.sendEmail(message, subject, recipient);
     }
 
 }

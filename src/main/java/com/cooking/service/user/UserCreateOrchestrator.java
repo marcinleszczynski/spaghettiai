@@ -61,6 +61,6 @@ public class UserCreateOrchestrator {
         accountActivationTemplate.add("name", user.getFirstName());
         accountActivationTemplate.add("activationUrl", frontendUrl + "/auth/activate?code=" + user.getActivationCode());
         var message = accountActivationTemplate.render();
-        emailService.sendEmail(user.getEmail(), message);
+        emailService.sendEmail(user.getEmail(), "SpaghettiAI activation account", message);
     }
 }
