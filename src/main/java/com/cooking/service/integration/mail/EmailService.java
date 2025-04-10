@@ -5,13 +5,13 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Properties;
-
 @Service
+@RequiredArgsConstructor
 public class EmailService {
 
     @Value("${mail.sender.email}")
@@ -20,25 +20,16 @@ public class EmailService {
     @Value("${mail.sender.password}")
     private String senderPassword;
 
+    private final Session session;
+    private final Transport transport;
+
     @SneakyThrows
     public void sendEmail(String recipient, String text) {
-        var session = createSession();
         var message = createMessage(session, recipient, text);
 
-
-        var transport = session.getTransport("smtp");
         transport.connect("smtp.gmail.com", senderEmail, senderPassword);
         transport.sendMessage(message, message.getAllRecipients());
         transport.close();
-    }
-
-    private Session createSession() {
-        var properties = new Properties();
-        properties.put("mail.smtp.port", "587");
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.starttls.enable", "true");
-
-        return Session.getDefaultInstance(properties, null);
     }
 
     @SneakyThrows
