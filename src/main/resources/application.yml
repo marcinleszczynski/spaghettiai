@@ -16,7 +16,7 @@ spring:
         locations: classpath:db/migration
     ai:
         openai:
-            api-key: AIzaSyALOu5jNg_ftUxXfNh-GBgikL72RkHja_I
+            api-key: ${GEMINI_API_KEY}
             chat:
                 base-url: https://generativelanguage.googleapis.com
                 completions-path: /v1beta/openai/chat/completions
