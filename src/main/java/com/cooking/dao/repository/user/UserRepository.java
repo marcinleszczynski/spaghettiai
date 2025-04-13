@@ -9,6 +9,11 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends AbstractRepository<User> {
+
     Optional<User> findByEmailAndActivatedTrue(String email);
+
     Optional<User> findByActivationCode(UUID activationCode);
+
+    boolean existsByEmail(String email);
+
 }

@@ -3,6 +3,7 @@ package com.cooking.service.auth;
 import com.cooking.controller.auth.dto.UserLoginRequestDto;
 import com.cooking.controller.auth.dto.UserLoginResponseDto;
 import com.cooking.dao.repository.user.UserRepository;
+import com.cooking.service.common.exception.LoginException;
 import com.cooking.service.common.security.jwt.JwtService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -28,14 +29,14 @@ public class AuthService {
 
         var user = userRepository
                 .findByEmailAndActivatedTrue(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User with email " + email + " not found"));
+                .orElseThrow(() -> new LoginException("User with email " + email + " not found"));
 
         if (comparePasswordHashes(password, user.getPassword())) {
             return UserLoginResponseDto.builder()
                     .token(jwtService.createToken(user))
                     .build();
         }
-        throw new UsernameNotFoundException("Wrong password");
+        throw new LoginException("Wrong password");
     }
 
     public void activate(UUID activationCode) {
