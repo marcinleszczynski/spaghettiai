@@ -98,8 +98,6 @@
             
             <p><a href="{activationUrl}" class="alternative-link">{activationUrl}</a></p>
             
-            <p>Please note that this activation link will expire in 24 hours for security reasons.</p>
-            
             <p>If you did not create an account with Spaghetti AI, please disregard this email.</p>
             
             <p>Thank you,<br>The Spaghetti AI Team</p>

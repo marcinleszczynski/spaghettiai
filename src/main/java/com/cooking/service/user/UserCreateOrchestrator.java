@@ -3,6 +3,7 @@ package com.cooking.service.user;
 import com.cooking.controller.auth.dto.UserRegistrationDto;
 import com.cooking.dao.model.user.User;
 import com.cooking.dao.repository.user.UserRepository;
+import com.cooking.service.common.exception.RegistrationException;
 import com.cooking.service.integration.mail.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.prompt.PromptTemplate;
@@ -22,19 +23,28 @@ public class UserCreateOrchestrator {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final UserValidationOrchestrator userValidationOrchestrator;
 
     @Value("${app.frontend-url}")
     private String frontendUrl;
 
     public void orchestrate(UserRegistrationDto dto) {
+        sanitize(dto);
         validateUserCredentials(dto);
         var user = createUser(dto);
         sendActivationEmail(user);
     }
 
+    private void sanitize(UserRegistrationDto dto) {
+        dto.setEmail(dto.getEmail().trim());
+        dto.setPassword(dto.getPassword().trim());
+        dto.setFirstName(dto.getFirstName().trim());
+        dto.setLastName(dto.getLastName().trim());
+        dto.setPhoneNumber(dto.getPhoneNumber().trim());
+    }
+
     private void validateUserCredentials(UserRegistrationDto dto) {
-        // TODO - implement validation
-        return;
+        userValidationOrchestrator.orchestrate(dto);
     }
 
     private User createUser(UserRegistrationDto dto) {
@@ -48,7 +58,7 @@ public class UserCreateOrchestrator {
         user.setRole(USER);
         user.setActivated(false);
         user.setActivationCode(UUID.randomUUID());
-        System.out.println("Saving user: " + user);
+
         return userRepository.save(user);
     }
 

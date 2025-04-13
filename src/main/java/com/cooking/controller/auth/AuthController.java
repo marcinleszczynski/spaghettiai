@@ -4,6 +4,7 @@ import com.cooking.controller.auth.dto.UserLoginRequestDto;
 import com.cooking.controller.auth.dto.UserLoginResponseDto;
 import com.cooking.controller.auth.dto.UserRegistrationDto;
 import com.cooking.service.auth.AuthService;
+import com.cooking.service.common.exception.RegistrationException;
 import com.cooking.service.user.UserCreateOrchestrator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
